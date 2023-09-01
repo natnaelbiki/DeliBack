@@ -13,6 +13,7 @@ from django.contrib.auth import authenticate
 def login(request):
 	if request.method == 'POST':
 		data = JSONParser().parse(request)
+		print(data['username'])
 		user = authenticate(request, 
 			username=data['username'], 
 			password=data['password'])
@@ -33,7 +34,7 @@ def signup(request):
 	if request.method == 'POST':
 		try:
 			data = JSONParser().parse(request)
-			user = User.objects.create_user(user=data['username'], password=data['password'])
+			user = User.objects.create_user(username=data['username'], password=data['password'])
 			user.save()
 			token = Token.objects.create(user=user)
 			return JsonResponse({'token':str(token)},status=201)
